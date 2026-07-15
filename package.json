@@ -38,7 +38,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zeddparis/mcp-immo-france.git"
+    "url": "git+https://github.com/zedd75/mcp-immo-france.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",

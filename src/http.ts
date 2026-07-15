@@ -1,4 +1,4 @@
-const USER_AGENT = "mcp-immo-france/0.2 (+https://github.com/zeddparis/mcp-immo-france)";
+const USER_AGENT = "mcp-immo-france/0.2 (+https://github.com/zedd75/mcp-immo-france)";
 const TIMEOUT_MS = 25_000;
 
 interface CacheEntry {

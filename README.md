@@ -1,6 +1,6 @@
 # mcp-immo-france
 
-[![CI](https://github.com/zeddparis/mcp-immo-france/actions/workflows/ci.yml/badge.svg)](https://github.com/zeddparis/mcp-immo-france/actions/workflows/ci.yml)
+[![CI](https://github.com/zedd75/mcp-immo-france/actions/workflows/ci.yml/badge.svg)](https://github.com/zedd75/mcp-immo-france/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/mcp-immo-france)](https://www.npmjs.com/package/mcp-immo-france)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](package.json)
