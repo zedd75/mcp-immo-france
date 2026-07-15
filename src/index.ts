@@ -6,6 +6,9 @@ import {
   geocodeAddress,
   propertySales,
   pricePerM2,
+  estimateProperty,
+  rentEstimate,
+  propertyReport,
   dpeLookup,
   naturalRisks,
   communeInfo,
@@ -14,7 +17,7 @@ import {
 
 const server = new McpServer({
   name: "mcp-immo-france",
-  version: "0.1.0",
+  version: "0.2.0",
 });
 
 type Handler<A> = (args: A) => Promise<unknown>;
@@ -96,6 +99,52 @@ server.registerTool(
     },
   },
   wrap(pricePerM2),
+);
+
+server.registerTool(
+  "estimate_property",
+  {
+    title: "Estimate a property's value (comparables)",
+    description:
+      "Transparent comparables-based valuation of a flat or house at a precise French address: weighted median of nearby single-dwelling notarized sales, adjusted to current market level, with every comp and weight returned for audit. Also returns the official rent indicator and gross rental yield.",
+    inputSchema: {
+      address: z.string().describe("Precise address (street + number preferred)"),
+      type_local: z.enum(["Appartement", "Maison"]),
+      surface_m2: z.number().min(8).max(1000).describe("Living surface in m²"),
+      rooms: z.number().int().min(1).max(20).optional().describe("Main rooms (pièces principales) — refines the rent indicator"),
+    },
+  },
+  wrap(estimateProperty),
+);
+
+server.registerTool(
+  "rent_estimate",
+  {
+    title: "Rent indicators (Carte des loyers)",
+    description:
+      "Official modelled asking rents (€/m²/month, charges included) for any French commune: apartments overall, 1-2 rooms, 3+ rooms, and houses. Source: Carte des loyers, Ministère du Logement / ANIL.",
+    inputSchema: {
+      location: z.string().describe("Address, commune name or INSEE code"),
+      surface_m2: z.number().optional().describe("If given, also returns the estimated monthly rent"),
+    },
+  },
+  wrap(rentEstimate),
+);
+
+server.registerTool(
+  "property_report",
+  {
+    title: "Full property due-diligence report",
+    description:
+      "One call, full dossier for a French address: price-per-m² market stats, recent notarized sales, energy diagnostics (DPE), natural & technological risks, commune profile, official rent indicators — plus a comparables-based valuation and gross yield when type_local and surface_m2 are provided. Ideal first call when a user asks about a specific property.",
+    inputSchema: {
+      address: z.string().describe("Address in France"),
+      type_local: z.enum(["Appartement", "Maison"]).optional(),
+      surface_m2: z.number().min(8).max(1000).optional(),
+      rooms: z.number().int().min(1).max(20).optional(),
+    },
+  },
+  wrap(propertyReport),
 );
 
 server.registerTool(

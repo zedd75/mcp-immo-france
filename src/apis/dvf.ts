@@ -1,9 +1,20 @@
 import { fetchText, HttpError } from "../http.js";
 import { parseCsv } from "../util/csv.js";
-import { haversineMeters, departementFromInsee } from "../util/geo.js";
+import { haversineMeters, departementFromInsee, expandPlmCodes } from "../util/geo.js";
 
-/** Years published in the geo-dvf per-commune CSV distribution. */
-export const DVF_YEARS = [2021, 2022, 2023, 2024, 2025];
+export const DVF_FIRST_YEAR = 2021;
+
+/**
+ * Candidate years in the geo-dvf distribution. Future years that are not
+ * published yet simply 404 and are treated as empty, so new releases are
+ * picked up automatically without a code change.
+ */
+export function availableYears(): number[] {
+  const current = new Date().getFullYear();
+  const years: number[] = [];
+  for (let y = DVF_FIRST_YEAR; y <= current; y++) years.push(y);
+  return years;
+}
 
 export type LocalType = "Appartement" | "Maison" | "Dépendance" | "Local industriel. commercial ou assimilé";
 
@@ -91,8 +102,16 @@ export async function fetchCommuneYear(inseeCode: string, year: number): Promise
   }
 }
 
-export async function fetchCommune(inseeCode: string, years: number[]): Promise<DvfRow[]> {
-  const all = await Promise.all(years.map((y) => fetchCommuneYear(inseeCode, y)));
+/**
+ * Fetch DVF rows for one or more communes across several years. Paris, Lyon
+ * and Marseille city codes are expanded to their arrondissements (the geo-dvf
+ * distribution has no city-level file for them).
+ */
+export async function fetchCommunes(inseeCodes: string[], years: number[]): Promise<DvfRow[]> {
+  const codes = [...new Set(inseeCodes.flatMap(expandPlmCodes))];
+  const all = await Promise.all(
+    codes.flatMap((code) => years.map((y) => fetchCommuneYear(code, y))),
+  );
   return all.flat();
 }
 

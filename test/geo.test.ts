@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { departementFromInsee, haversineMeters, parentCommuneCode } from "../src/util/geo.js";
+import {
+  departementFromInsee,
+  expandPlmCodes,
+  haversineMeters,
+  offsetPoint,
+  parentCommuneCode,
+} from "../src/util/geo.js";
 
 describe("geo utils", () => {
   it("maps PLM arrondissements to their parent commune", () => {
@@ -13,6 +19,22 @@ describe("geo utils", () => {
     expect(departementFromInsee("75102")).toBe("75");
     expect(departementFromInsee("97411")).toBe("974");
     expect(departementFromInsee("2A004")).toBe("2A");
+  });
+
+  it("expands PLM city codes to arrondissements", () => {
+    expect(expandPlmCodes("75056")).toHaveLength(20);
+    expect(expandPlmCodes("75056")[0]).toBe("75101");
+    expect(expandPlmCodes("69123")).toHaveLength(9);
+    expect(expandPlmCodes("13055")).toHaveLength(16);
+    expect(expandPlmCodes("33063")).toEqual(["33063"]);
+  });
+
+  it("offsets a point by bearing and distance", () => {
+    const north = offsetPoint(48.86, 2.33, 0, 1000);
+    expect(haversineMeters(48.86, 2.33, north.lat, north.lon)).toBeCloseTo(1000, -1);
+    const east = offsetPoint(48.86, 2.33, 90, 1000);
+    expect(east.lat).toBeCloseTo(48.86, 6);
+    expect(haversineMeters(48.86, 2.33, east.lat, east.lon)).toBeCloseTo(1000, -1);
   });
 
   it("haversine distance is plausible", () => {

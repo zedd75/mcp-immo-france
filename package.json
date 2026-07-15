@@ -1,7 +1,7 @@
 {
   "name": "mcp-immo-france",
-  "version": "0.1.0",
-  "description": "MCP server for French real-estate intelligence: real sale prices (DVF), price per m², energy ratings (DPE), natural risks and commune data for any French address. Zero API keys.",
+  "version": "0.2.0",
+  "description": "MCP server for French real-estate intelligence: real sale prices (DVF), transparent comparables-based valuations, official rent indicators & gross yield, energy ratings (DPE), natural risks and commune data for any French address. Zero API keys.",
   "license": "MIT",
   "type": "module",
   "bin": {

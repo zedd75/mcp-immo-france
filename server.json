@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.zeddparis/mcp-immo-france",
+  "description": "French real-estate intelligence: notarized sale prices (DVF), transparent comparables valuations, official rent indicators & gross yield, DPE energy ratings, Géorisques risk reports and INSEE commune data for any French address. Zero API keys.",
+  "repository": {
+    "url": "https://github.com/zeddparis/mcp-immo-france",
+    "source": "github"
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registry_type": "npm",
+      "identifier": "mcp-immo-france",
+      "version": "0.2.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

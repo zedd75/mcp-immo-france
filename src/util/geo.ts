@@ -26,3 +26,33 @@ export function parentCommuneCode(insee: string): string {
 export function departementFromInsee(insee: string): string {
   return insee.startsWith("97") ? insee.slice(0, 3) : insee.slice(0, 2);
 }
+
+/**
+ * DVF, BAN and the rent map key Paris/Lyon/Marseille by municipal
+ * arrondissement; a city-wide query must fan out to all of them.
+ */
+export function expandPlmCodes(insee: string): string[] {
+  const ranges: Record<string, [number, number]> = {
+    "75056": [75101, 75120], // Paris
+    "69123": [69381, 69389], // Lyon
+    "13055": [13201, 13216], // Marseille
+  };
+  const range = ranges[insee];
+  if (!range) return [insee];
+  const codes: string[] = [];
+  for (let c = range[0]; c <= range[1]; c++) codes.push(String(c));
+  return codes;
+}
+
+/** Point at `distanceM` meters from (lat, lon) along a compass bearing. */
+export function offsetPoint(
+  lat: number,
+  lon: number,
+  bearingDeg: number,
+  distanceM: number,
+): { lat: number; lon: number } {
+  const b = (bearingDeg * Math.PI) / 180;
+  const dLat = (distanceM * Math.cos(b)) / 111_320;
+  const dLon = (distanceM * Math.sin(b)) / (111_320 * Math.cos((lat * Math.PI) / 180));
+  return { lat: lat + dLat, lon: lon + dLon };
+}
