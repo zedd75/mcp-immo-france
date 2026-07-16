@@ -11,7 +11,7 @@ disk. The main risks to users are therefore:
 
 ## Reporting a vulnerability
 
-Please email **zedd.paris.pro@gmail.com** with a description and reproduction
+Please email **omar.benpro@gmail.com** with a description and reproduction
 steps. You should receive a reply within 72 hours. Please do not open a public
 issue for an unpatched vulnerability.
 
